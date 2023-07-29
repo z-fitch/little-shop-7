@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Merchant, type: :model do 
+RSpec.describe Merchant, type: :model do
   before :each do
     @merchant_1 = Merchant.create!(name: 'Schroeder-Jerde')
     @merchant_2 = Merchant.create!(name: 'Rempel and Jones')
@@ -121,6 +121,7 @@ RSpec.describe Merchant, type: :model do
     @transaction_36 = @invoice_12.transactions.create!(credit_card_number: '4923661117104166', credit_card_expiration_date: '08/22/20', result: 'success')
     #Customer 6 - total successful transactions = 6
   end
+
   describe "relationships" do
     it {should have_many :items}
     it {should have_many(:invoice_items).through(:items)}
@@ -140,41 +141,41 @@ RSpec.describe Merchant, type: :model do
         expect(@merchant_1.favorite_customers_alt.first).to eq(@customer_6)
       end
     end
+  end
 
+  describe "#distinct_invoices" do
+    it "returns all invoices featuring an item from the merchant with no duplicates" do
+      merch_1_distinct_invoices = [@invoice_1, @invoice_2, @invoice_3, @invoice_4, @invoice_5, @invoice_6, @invoice_7, @invoice_8, @invoice_9, @invoice_10, @invoice_11, @invoice_12]
 
-    describe "#distinct_invoices" do
-      it "returns all invoices featuring an item from the merchant with no duplicates" do
-        merch_1_distinct_invoices = [@invoice_1, @invoice_2, @invoice_3, @invoice_4, @invoice_5, @invoice_6, @invoice_7, @invoice_8, @invoice_9, @invoice_10, @invoice_11, @invoice_12]
+      expect(@merchant_1.distinct_invoices).to match_array(merch_1_distinct_invoices)
+    end
+  end
+  
+  describe "#items_ready" do
+    it "returns all items that have been ordered, not shipped, and from an uncancelled invoice" do
+      expected_items = [@item_3, @item_4]
+      result = @merchant_1.items_ready
 
-        expect(@merchant_1.distinct_invoices).to match_array(merch_1_distinct_invoices)
+      expect(result).to match_array(expected_items)
+    end
 
-    
-    describe "#items_ready" do
-      it "returns all items that have been ordered, not shipped, and from an uncancelled invoice" do
-        expected_items = [@item_3, @item_4]
-        result = @merchant_1.items_ready
+    it "also returns the invoice_id for each associated item" do
+      result = @merchant_1.items_ready
+      expect(result[0].invoice_id).to eq(@invoice_3.id)
+      expect(result[1].invoice_id).to eq(@invoice_4.id)
+    end
 
-        expect(result).to match_array(expected_items)
-      end
+    it "sorts by invoice creation date, oldest first" do
+      result = @merchant_1.items_ready
+      
+      expect(result.first.created_at_time < result.last.created_at_time).to be true
+    end
 
-      it "also returns the invoice_id for each associated item" do
-        result = @merchant_1.items_ready
-        expect(result[0].invoice_id).to eq(@invoice_3.id)
-        expect(result[1].invoice_id).to eq(@invoice_4.id)
-      end
+    it "returns a formatted string of the invoice creation date" do
+      result = @merchant_1.items_ready
 
-      it "sorts by invoice creation date, oldest first" do
-        result = @merchant_1.items_ready
-        
-        expect(result.first.created_at_time < result.last.created_at_time).to be true
-      end
-
-      it "returns a formatted string of the invoice creation date" do
-        result = @merchant_1.items_ready
-
-        expect(result[0].invoice_created_at).to eq("Saturday, January 1, 2000")
-        expect(result[1].invoice_created_at).to eq("Sunday, January 1, 2023")
-      end
+      expect(result[0].invoice_created_at).to eq("Saturday, January 1, 2000")
+      expect(result[1].invoice_created_at).to eq("Sunday, January 1, 2023")
     end
   end
 end

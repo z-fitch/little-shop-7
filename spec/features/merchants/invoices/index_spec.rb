@@ -59,7 +59,7 @@ RSpec.describe "Merchant Invoices Index page", type: :feature do
 
     it "each invoice.id links to its merchant invoice show page" do
       visit merchant_invoices_path(@merchant_1)
-      save_and_open_page
+      
 
       within("div#merchant_invoices") do
         expect(page).to have_link("#{@invoice_1.id}", href: merchant_invoice_path(@merchant_1, @invoice_1))
