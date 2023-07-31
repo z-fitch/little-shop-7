@@ -1,11 +1,20 @@
 <!-- - Must include a thorough README to describe the project
    - README should include a basic description of the project, a summary of the work completed, and some ideas for a potential contributor to work on/refactor next. Also include the names and GitHub links of all student contributors on your project.  -->
-# **Little Esty Shop**
+# 🛍️ **Little Esty Shop** 🛍️
 
 ## Project Description
 
 "Little Esty Shop" is a mid-mod group project where students are tasked with building a fictitious e-commerce platform. The project aims to create a robust web application that allows merchants and admins to efficiently manage inventory and fulfill customer invoices.
 ___
+
+## Frameworks Used
+| Rails 7.0.5 | Ruby 3.2.2 | ActiveRecord |
+|:-----------:|:----------:|:------------:|
+|  SimpleCov  |   VS Code  |   Capybara   |
+|    Github   |   Render   |     RSpec    |
+|     HTML    |     SQL    |      Pry     |
+
+______________
 
 ## Over View
 The main features of "Little Esty Shop" include:
@@ -30,22 +39,22 @@ ___
 
 5. Deployment Skills: Gain experience in deploying the application on the Render platform, showcasing their ability to make the project accessible to the public.
 ___
-## Next Steps and Potential Refactors
+## 🏗️ Next Steps and Potential Refactors
 
 stuff we want to refactor
 ___
 
 ## Contributors
 
-[Jorja Fleming](https://github.com/JorjaF)
+👤 Ethan Black: [Github](https://github.com/ethanrossblack),[LinkedIn](https://www.linkedin.com/in/ethanrossblack/)
 
-[Ethan Black]()
+👤 Zanna Fitchz; [Github](https://github.com/z-fitch),[LinkedIn](https://www.linkedin.com/in/zanna-fitch-2841a1279/)
 
-[Zanna Fitch]()
+👤 Jorja Fleming: [Github](https://github.com/JorjaF),[LinkedIn](https://www.linkedin.com/in/jorja-f-25027a70/)
 
-[Daniel Gallagher]()
+👤 Daniel Gallagher: [Github](Daniel-Gallagher92),[LinkedIn](https://www.linkedin.com/in/daniel-gallagher-5b29271a1/)
 
 ___
 
-## Acknowledgments
+## 💐 Acknowledgments 💐
 We express our gratitude to our instructors, teaching assistants, and cohort-mates for their guidance and support throughout the development of this project.
