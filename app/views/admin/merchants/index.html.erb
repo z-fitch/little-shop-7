@@ -19,7 +19,7 @@
         <% @merchants.top_five_merchants_by_revenue.each do |merchant| %>
         <li> <%= link_to "#{merchant.name}", admin_merchant_path(merchant) %>
         <%= "Total Revenue: #{number_to_currency(merchant.total_revenue&./100)}"  %>
-        <%= "Top selling date for #{merchant.name} was #{merchant.best_day.strftime('%B %d, %Y')}" %>
+        <%= "Top selling date for #{merchant.name} was #{merchant.best_day.formatted_date}" %>
         <% end %>
     </ol>
 </div>

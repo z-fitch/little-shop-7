@@ -128,11 +128,11 @@ RSpec.describe "Admin Merchant Index Page", type: :feature do
         visit admin_merchants_path
         
         within ".top_merchants" do 
-          expect(page).to have_content("Top selling date for #{@merchant_1.name} was #{@merchant_1.best_day.strftime('%B %d, %Y')}")
-          expect(page).to have_content("Top selling date for #{@merchant_6.name} was #{@merchant_6.best_day.strftime('%B %d, %Y')}")
-          expect(page).to have_content("Top selling date for #{@merchant_2.name} was #{@merchant_2.best_day.strftime('%B %d, %Y')}")
-          expect(page).to have_content("Top selling date for #{@merchant_4.name} was #{@merchant_4.best_day.strftime('%B %d, %Y')}")
-          expect(page).to have_content("Top selling date for #{@merchant_5.name} was #{@merchant_5.best_day.strftime('%B %d, %Y')}")
+          expect(page).to have_content("Top selling date for #{@merchant_1.name} was #{@merchant_1.best_day.created_at.strftime("%A, %B %-e, %Y")}")
+          expect(page).to have_content("Top selling date for #{@merchant_6.name} was #{@merchant_6.best_day.created_at.strftime("%A, %B %-e, %Y")}")
+          expect(page).to have_content("Top selling date for #{@merchant_2.name} was #{@merchant_2.best_day.created_at.strftime("%A, %B %-e, %Y")}")
+          expect(page).to have_content("Top selling date for #{@merchant_4.name} was #{@merchant_4.best_day.created_at.strftime("%A, %B %-e, %Y")}")
+          expect(page).to have_content("Top selling date for #{@merchant_5.name} was #{@merchant_5.best_day.created_at.strftime("%A, %B %-e, %Y")}")
         end
       end
     end

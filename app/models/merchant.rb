@@ -59,6 +59,5 @@ class Merchant < ApplicationRecord
             .select("invoices.*, SUM(invoice_items.unit_price * invoice_items.quantity) As tot_revenue")
             .order("tot_revenue DESC, invoices.created_at DESC")
             .first
-            .created_at
   end
 end

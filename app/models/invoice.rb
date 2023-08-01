@@ -12,7 +12,7 @@ class Invoice < ApplicationRecord
   end
 
   def formatted_date
-    created_at.strftime("%A, %B %d, %Y")
+    created_at.strftime("%A, %B %-e, %Y")
   end
 
 end
