@@ -48,7 +48,7 @@ ___
 
 👤 Ethan Black: [Github](https://github.com/ethanrossblack),[LinkedIn](https://www.linkedin.com/in/ethanrossblack/)
 
-👤 Zanna Fitchz; [Github](https://github.com/z-fitch),[LinkedIn](https://www.linkedin.com/in/zanna-fitch-2841a1279/)
+👤 Zanna Fitch; [Github](https://github.com/z-fitch),[LinkedIn](https://www.linkedin.com/in/zanna-fitch-2841a1279/)
 
 👤 Jorja Fleming: [Github](https://github.com/JorjaF),[LinkedIn](https://www.linkedin.com/in/jorja-f-25027a70/)
 

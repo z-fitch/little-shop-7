@@ -8,7 +8,7 @@
     </div>
   <% end %>
 
-  <p>Created at: <%= @invoice.created_at.strftime('%A, %B %d, %Y') %></p>
+  <p>Created at: <%= @invoice.formatted_date %></p>
   <p>Total Revenue: <%= @invoice.total_revenue_to_currency %>
 
   <h2>Customer Information:</h2>
