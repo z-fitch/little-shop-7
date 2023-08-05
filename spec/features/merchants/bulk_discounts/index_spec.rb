@@ -122,6 +122,28 @@ RSpec.describe "Merchant Invoices Index page", type: :feature do
       expect(page).to have_content("Quantity is not a number")
     end
 
+    it "filled in with Invalid Percentage, after being filled, I click submit and i see an error saying the discount cant be made" do 
+      visit new_merchant_bulk_discount_path(@merchant_1)
+
+      fill_in("Quantity", with: "15")
+      fill_in("Percentage", with: "Hello")
+
+      click_button("Save")
+
+      expect(page).to have_content("Percentage is not a number")
+    end
+
+    it "filled in with Invalid Quantity, after being filled, I click submit and i see an error saying the discount cant be made" do 
+      visit new_merchant_bulk_discount_path(@merchant_1)
+
+      fill_in("Quantity", with: "Hello")
+      fill_in("Percentage", with: "20")
+
+      click_button("Save")
+
+      expect(page).to have_content("Quantity is not a number")
+    end
+
     it "has a button to delete a discount" do 
       visit merchant_bulk_discounts_path(@merchant_1)
 

@@ -36,12 +36,66 @@ RSpec.describe "Merchant Invoices Show page", type: :feature do
       click_link("Edit Discount")
 
       expect(current_path).to eq(edit_merchant_bulk_discount_path(@merchant_1, @discount_3))
-save_and_open_page
-      expect(page).to have_field("Percentage")
-      expect(page).to have_field("Quantity")
 
-      expect(page).to have_content("50%")
-      expect(page).to have_content("15")
+      expect(page).to have_field("Percentage", with: @discount_3.percentage)
+      expect(page).to have_field("Quantity", with: @discount_3.quantity)
+    end
+
+    it "when the edit form is filled in with new information, after clicking submit i am redirected to the show page and the information shows up" do
+      visit edit_merchant_bulk_discount_path(@merchant_1, @discount_3)
+
+      fill_in("Quantity", with: "15")
+      fill_in("Percentage", with: "15")
+      click_button("Save")
+
+      expect(current_path).to eq(merchant_bulk_discount_path(@merchant_1, @discount_3))
+
+      expect(page).to have_content("15%")
+      expect(page).to have_content("15 items")
+    end
+
+    it "when the edit form is filled in with invaild information, after clicking submit i am redirected to the edit page with an error" do
+      visit edit_merchant_bulk_discount_path(@merchant_1, @discount_3)
+
+      fill_in("Quantity", with: "15")
+      fill_in("Percentage", with: "")
+      click_button("Save")
+
+      expect(current_path).to eq(edit_merchant_bulk_discount_path(@merchant_1, @discount_3))
+      expect(page).to have_content("Error: Percentage is not a number")
+    end
+
+    it "when the edit form is filled in with invaild information, after clicking submit i am redirected to the edit page with an error" do
+      visit edit_merchant_bulk_discount_path(@merchant_1, @discount_3)
+
+      fill_in("Quantity", with: "")
+      fill_in("Percentage", with: "15")
+      click_button("Save")
+
+      expect(current_path).to eq(edit_merchant_bulk_discount_path(@merchant_1, @discount_3))
+      expect(page).to have_content("Error: Quantity is not a number")
+    end
+
+    it "when the edit form is filled in with invaild information, after clicking submit i am redirected to the edit page with an error" do
+      visit edit_merchant_bulk_discount_path(@merchant_1, @discount_3)
+
+      fill_in("Quantity", with: "15")
+      fill_in("Percentage", with: "Hello")
+      click_button("Save")
+
+      expect(current_path).to eq(edit_merchant_bulk_discount_path(@merchant_1, @discount_3))
+      expect(page).to have_content("Error: Percentage is not a number")
+    end
+
+    it "when the edit form is filled in with invaild information, after clicking submit i am redirected to the edit page with an error" do
+      visit edit_merchant_bulk_discount_path(@merchant_1, @discount_3)
+
+      fill_in("Quantity", with: "Hello")
+      fill_in("Percentage", with: "15")
+      click_button("Save")
+
+      expect(current_path).to eq(edit_merchant_bulk_discount_path(@merchant_1, @discount_3))
+      expect(page).to have_content("Error: Quantity is not a number")
     end
   end
 end

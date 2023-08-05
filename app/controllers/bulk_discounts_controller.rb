@@ -9,7 +9,7 @@ class BulkDiscountsController < ApplicationController
     @merchant = Merchant.find(params[:merchant_id])
     @discount = @merchant.bulk_discounts.find(params[:id])
   end
-
+  
   def edit
     @merchant = Merchant.find(params[:merchant_id])
     @discount = @merchant.bulk_discounts.find(params[:id])
@@ -18,23 +18,20 @@ class BulkDiscountsController < ApplicationController
   def update
     merchant = Merchant.find(params[:merchant_id])
     discount = merchant.bulk_discounts.find(params[:id])
-    require 'pry'; binding.pry
     if discount.update(bulk_discounts_params)
-      if discount.save
-        flash[:alert] = "Discount information updated successfully!"
-        redirect_to merchant_bulk_discount_path(merchant, discount)
-      end
+      redirect_to merchant_bulk_discount_path(merchant, discount)
+      flash[:alert] = "Discount information updated successfully!"
     else
       redirect_to edit_merchant_bulk_discount_path(merchant, discount)
       flash[:alert] = "Error: #{error_message(discount.errors)}"
     end
   end
-
+  
   def new
     @merchant = Merchant.find(params[:merchant_id])
     @discount = @merchant.bulk_discounts.new
   end
-
+  
   def create
     merchant = Merchant.find(params[:merchant_id])
     discount = merchant.bulk_discounts.new(bulk_discounts_params)
@@ -46,16 +43,17 @@ class BulkDiscountsController < ApplicationController
       redirect_to new_merchant_bulk_discount_path(merchant)
     end
   end
-
+  
   def destroy
     merchant = Merchant.find(params[:merchant_id])
     discount = merchant.bulk_discounts.find(params[:id]).destroy
     redirect_to merchant_bulk_discounts_path(merchant)
   end
-
+  
+  
   private
-
+  
   def bulk_discounts_params
-    params.permit(:quantity, :percentage) 
+    params.permit(:quantity, :percentage, :id, :merchant_id) 
   end
 end
