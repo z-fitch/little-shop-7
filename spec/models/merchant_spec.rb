@@ -31,6 +31,18 @@ RSpec.describe Merchant, type: :model do
       expect(Merchant.top_five_merchants_by_revenue).to eq([@merchant_1, @merchant_6, @merchant_2, @merchant_4, @merchant_5])
       expect(Merchant.top_five_merchants_by_revenue).to_not eq([@merchant_3, @merchant_6, @merchant_2, @merchant_4, @merchant_5])
     end
+
+    it ".enabled_merchants" do 
+      original_test_data
+
+      expect(Merchant.enabled_merchants).to eq([@merchant_2])
+    end
+
+    it ".disabled_merchants" do 
+      original_test_data
+
+      expect(Merchant.disabled_merchants).to eq([@merchant_1, @merchant_3])
+    end
   end
 
   describe "instance methods" do 
