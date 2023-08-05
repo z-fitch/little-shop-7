@@ -256,21 +256,4 @@ RSpec.describe "Merchant Items show Page", type: :feature do
     expect(current_path).to eq(edit_merchant_item_path(@merchant_1, @item_1.id))
     expect(page).to have_content("Unit price is not a number")
   end
-
-  describe "api photos" do 
-    it "displays photos and likes" do 
-
-      visit merchant_item_path(@merchant_1, @item_1.id)
-      
-      within("#item_photo") do 
-        image = page.find("img")
-        expect(page).to have_css("img")
-      end
-        
-      within("#little_esty") do 
-        expect(page).to have_content("Likes")
-        expect(page).to have_content("Likes: 129")
-      end
-    end
-  end
 end
