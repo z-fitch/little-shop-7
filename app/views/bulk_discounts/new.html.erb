@@ -1,0 +1,14 @@
+<%= render partial: "merchants/header", locals: {merchant: @merchant} %>
+
+<h2>New Bulk Discount</h2>
+
+<%= form_with model: @bulk_discount, url: merchant_bulk_discounts_path(@merchant) do |f| %>
+
+  <%= f.label :percentage %>
+  <%= f.text_field :percentage %>
+
+  <%= f.label :quantity %>
+  <%= f.text_field :quantity %>
+  
+  <%= f.submit %>
+<% end %>

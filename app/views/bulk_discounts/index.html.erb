@@ -1,0 +1,16 @@
+<%= render partial: "merchants/header", locals: {merchant: @merchant} %>
+
+<h3>All Discounts</h3>
+
+<%= link_to "Create Discount", new_merchant_bulk_discount_path(@merchant) %>
+
+<div id="all-discounts">
+  <ol>
+    <% @discounts.each do |d| %>
+    <li>
+      <%= link_to "#{d.percentage}% off #{d.quantity} items", merchant_bulk_discount_path(@merchant, d) %>
+      <%= button_to "Delete Discount", merchant_bulk_discount_path(@merchant, d), method: :delete %>
+    </li>
+    <% end %>
+  </ol>
+</div>
