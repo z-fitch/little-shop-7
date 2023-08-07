@@ -50,7 +50,6 @@ class BulkDiscountsController < ApplicationController
     redirect_to merchant_bulk_discounts_path(merchant)
   end
   
-  
   private
   
   def bulk_discounts_params

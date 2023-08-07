@@ -34,6 +34,10 @@ RSpec.describe "Merchant Invoice Show Page", type: :feature do
     # @invoice 3 has one item from @merchant_2
     @invoice_3 = @customer_3.invoices.create!(status: 'cancelled', created_at: Time.new(2003))
     @invoice3_item_4 = InvoiceItem.create!(invoice_id: @invoice_3.id, item_id: @item_4.id, quantity: 12, unit_price: 34873, status: 'packaged')
+
+    @discount_1 = @merchant_1.bulk_discounts.create!(percentage: 30, quantity: 10)
+    @discount_2 = @merchant_1.bulk_discounts.create!(percentage: 20, quantity: 8)
+    @discount_3 = @merchant_1.bulk_discounts.create!(percentage: 50, quantity: 15)
   end
 
   describe "when I visit a merchant's invoice show page (/merchants/:merchant_id/invoices/:invoice_id)" do
@@ -204,5 +208,27 @@ RSpec.describe "Merchant Invoice Show Page", type: :feature do
     end
     # ======= END STORY 18 TESTS =======
 
+    describe "When I visit my merchant invoice show page" do 
+      it "Has the total revenue for my merchant from this invoice (not including discounts)" do 
+        visit merchant_invoice_path(@merchant_1, @invoice_1)
+      
+        within("#merchant_invoice_revenue") do
+          expect(page).to have_content ("Total Revenue: #{@invoice_1.merchant_revenue_to_currency(@merchant_1.id)}")
+        end
+      end
+
+      it "Has the total discounted revenue for my merchant from this invoice which includes bulk discounts" do 
+        @discount_1 = @merchant_1.bulk_discounts.create!(percentage: 30, quantity: 10)
+        @discount_2 = @merchant_1.bulk_discounts.create!(percentage: 20, quantity: 8)
+        @discount_3 = @merchant_1.bulk_discounts.create!(percentage: 50, quantity: 15)
+        
+        visit merchant_invoice_path(@merchant_1, @invoice_1)
+      
+        within("#merchant_invoice_discount_revenue") do
+          expect(page).to have_content ("Discounted Revenue: #{@invoice_1.discounted_revenue_to_currency}")
+          expect(page).to have_content ("Discounted Revenue: $5,354.04")
+        end
+      end
+    end
   end
 end
