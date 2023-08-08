@@ -161,6 +161,7 @@ RSpec.describe "Merchant Invoices Index page", type: :feature do
         expect(current_path).to eq(merchant_bulk_discounts_path(@merchant_3))
         expect(page).to_not have_content(@discount_7)
       end
+      expect(page).to have_content("Bulk Discount Deleted!")
     end
 
     it "has a list of the next three holidays in the us" do 
