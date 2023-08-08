@@ -33,3 +33,4 @@ coverage
 /env.yml
 /config/application.yml
 .DS_Store
+/services
