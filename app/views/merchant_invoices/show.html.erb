@@ -37,9 +37,14 @@
                 <%= form.hidden_field :invoice_id, value: @invoice.id %>
                 <%= form.submit "Update Item Status" %>
               <% end %>
-
+            </td>
+            <td>
+              <% if invoice_item.applied_discounts.nil? == false%>
+                <td><%= link_to "Applied Discount", merchant_bulk_discount_path(@merchant, invoice_item.applied_discounts) %></td>
+              <%end%>
             </td>
           </tr>
+          
         <% end %>
       </tbody>
     </table>

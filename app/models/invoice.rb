@@ -46,6 +46,8 @@ class Invoice < ApplicationRecord
       .select("invoice_items.*, max((invoice_items.quantity * invoice_items.unit_price * bulk_discounts.percentage)/100) AS total_discount")
       .group("invoice_items.id")
       .sum(&:total_discount)
+      #https://www.fastruby.io/blog/rails/performance/writing-fast-rails-part-2.html
+      # for the ^ &
   end
   
   def discounted_revenue
@@ -54,7 +56,6 @@ class Invoice < ApplicationRecord
 
   def discounted_revenue_to_currency
     ActiveSupport::NumberHelper::number_to_currency(discounted_revenue.to_f / 100)
-    # require 'pry'; binding.pry
   end
 
 

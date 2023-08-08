@@ -218,16 +218,24 @@ RSpec.describe "Merchant Invoice Show Page", type: :feature do
       end
 
       it "Has the total discounted revenue for my merchant from this invoice which includes bulk discounts" do 
-        @discount_1 = @merchant_1.bulk_discounts.create!(percentage: 30, quantity: 10)
-        @discount_2 = @merchant_1.bulk_discounts.create!(percentage: 20, quantity: 8)
-        @discount_3 = @merchant_1.bulk_discounts.create!(percentage: 50, quantity: 15)
-        
         visit merchant_invoice_path(@merchant_1, @invoice_1)
       
         within("#merchant_invoice_discount_revenue") do
           expect(page).to have_content ("Discounted Revenue: #{@invoice_1.discounted_revenue_to_currency}")
           expect(page).to have_content ("Discounted Revenue: $5,354.04")
         end
+      end
+
+      it "has a link to the discount that was applied to the item show page" do 
+        visit merchant_invoice_path(@merchant_1, @invoice_1)
+
+        expect(page).to have_link("Applied Discount", count: 1)
+        expect(page).to_not have_link("Applied Discount", href: merchant_bulk_discount_path(@merchant_1, @discount_2))
+        expect(page).to_not have_link("Applied Discount", href: merchant_bulk_discount_path(@merchant_1, @discount_3))
+
+        click_link("Applied Discount")
+
+        expect(current_path).to eq(merchant_bulk_discount_path(@merchant_1, @discount_1))
       end
     end
   end

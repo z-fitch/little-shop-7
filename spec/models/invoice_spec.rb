@@ -106,6 +106,7 @@ RSpec.describe Invoice, type: :model do
         @invoice_1 = Invoice.create!(customer_id: @customer_1.id, status: 2, created_at: "2012-03-27 14:54:09")
         @ii_1 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_1.id, quantity: 10, unit_price: 10, status: 2)
         @ii_2 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_8.id, quantity: 1, unit_price: 10, status: 1)
+        
 
 
         @discount_1 = @merchant_1.bulk_discounts.create!(percentage: 30, quantity: 10)

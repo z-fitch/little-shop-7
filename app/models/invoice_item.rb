@@ -12,5 +12,10 @@ class InvoiceItem < ApplicationRecord
     unit_price * 0.01
   end
 
-  
+  def applied_discounts 
+    bulk_discounts
+      .where('bulk_discounts.quantity <= ?', quantity)
+      .order("bulk_discounts.percentage desc")
+      .limit(1).first
+  end
 end

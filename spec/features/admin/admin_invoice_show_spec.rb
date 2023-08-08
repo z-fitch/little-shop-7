@@ -30,6 +30,9 @@ RSpec.describe "Admin Invoice Show Page", type: :feature do
     @invoice_item_5 = InvoiceItem.create!(item_id: @item_5.id, invoice_id: @invoice_3.id, quantity: 3, unit_price: 2000, status: 1)
     @invoice_item_6 = InvoiceItem.create!(item_id: @item_6.id, invoice_id: @invoice_3.id, quantity: 4, unit_price: 1375, status: 1)
 
+    @discount_1 = @merchant_1.bulk_discounts.create!(percentage: 30, quantity: 10)
+    @discount_2 = @merchant_1.bulk_discounts.create!(percentage: 20, quantity: 8)
+    @discount_3 = @merchant_1.bulk_discounts.create!(percentage: 50, quantity: 15)
   end
   # US 33  
   it "I can see each invoice id links to the admin invoice show page" do
@@ -81,5 +84,12 @@ RSpec.describe "Admin Invoice Show Page", type: :feature do
 
     expect(current_path).to eq(admin_invoice_path(@invoice_1))
     expect(page).to have_select(:invoice_status, selected: "Cancelled")
+  end
+
+  it "Has the total discounted revenue for this invocie from the admin side which includes bulk discounts" do 
+    visit admin_invoice_path(@invoice_1)
+
+      expect(page).to have_content("Discounted Revenue: #{@invoice_1.discounted_revenue_to_currency}")
+      expect(page).to have_content("Discounted Revenue: $44.00")
   end
 end
