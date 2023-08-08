@@ -162,6 +162,17 @@ RSpec.describe "Merchant Invoices Index page", type: :feature do
         expect(page).to_not have_content(@discount_7)
       end
     end
+
+    it "has a list of the next three holidays in the us" do 
+      visit merchant_bulk_discounts_path(@merchant_3)
+
+      expect(page).to have_content("Upcoming Holidays")
+      within("div#holidays") do 
+        expect(page).to have_content("Labor Day")
+        expect(page).to have_content("Columbus Day")
+        expect(page).to have_content("Veterans Day")
+      end
+    end
   end
 end
 
