@@ -1,5 +1,9 @@
 <%= render partial: "header", locals: {merchant: @merchant} %>
 
+<div id="discounts">
+  <%= link_to "All Discounts", merchant_bulk_discounts_path(@merchant)%>
+</div>
+
 <div class="container">
   <div class="row pb-5">
     <div id="items_to_be_shipped" class="col">

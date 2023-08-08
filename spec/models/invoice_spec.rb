@@ -6,6 +6,7 @@ RSpec.describe Invoice, type: :model do
     it { should have_many :transactions }
     it { should have_many :invoice_items }
     it { should have_many(:items).through(:invoice_items) }
+    it { should have_many(:bulk_discounts).through(:invoice_items) }
   end
 
   describe "validations" do
@@ -36,6 +37,49 @@ RSpec.describe Invoice, type: :model do
   end
 
   describe 'instance methods' do 
+    describe '#discounted_revenue' do
+      before :each do
+        @merchant_1 = Merchant.create!(name: 'Hair Care')
+        @item_1 = Item.create!(name: "Shampoo", description: "This washes your hair", unit_price: 10, merchant_id: @merchant_1.id, status: 1)
+        @item_8 = Item.create!(name: "Butterfly Clip", description: "This holds up your hair but in a clip", unit_price: 5, merchant_id: @merchant_1.id)
+        @customer_1 = Customer.create!(first_name: 'Joey', last_name: 'Smith')
+        @invoice_1 = Invoice.create!(customer_id: @customer_1.id, status: 2, created_at: "2012-03-27 14:54:09")
+        @ii_1 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_1.id, quantity: 10, unit_price: 10, status: 2)
+        @ii_2 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_8.id, quantity: 1, unit_price: 10, status: 1)
+
+        @discount_1 = @merchant_1.bulk_discounts.create!(percentage: 30, quantity: 10)
+        @discount_2 = @merchant_1.bulk_discounts.create!(percentage: 20, quantity: 8)
+        @discount_3 = @merchant_1.bulk_discounts.create!(percentage: 50, quantity: 15)
+      end
+
+      it 'returns the total after discount' do 
+        expect(@invoice_1.discounted_revenue).to eq(80)
+      end
+    end
+
+    describe '#top_discounted_percentage' do
+      before :each do
+        @merchant_1 = Merchant.create!(name: 'Hair Care')
+        @item_1 = Item.create!(name: "Shampoo", description: "This washes your hair", unit_price: 10, merchant_id: @merchant_1.id, status: 1)
+        @item_8 = Item.create!(name: "Butterfly Clip", description: "This holds up your hair but in a clip", unit_price: 5, merchant_id: @merchant_1.id)
+        @customer_1 = Customer.create!(first_name: 'Joey', last_name: 'Smith')
+        @invoice_1 = Invoice.create!(customer_id: @customer_1.id, status: 2, created_at: "2012-03-27 14:54:09")
+        @ii_1 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_1.id, quantity: 10, unit_price: 10, status: 2)
+        @ii_2 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_8.id, quantity: 1, unit_price: 10, status: 1)
+
+
+        @discount_1 = @merchant_1.bulk_discounts.create!(percentage: 30, quantity: 10)
+        @discount_2 = @merchant_1.bulk_discounts.create!(percentage: 20, quantity: 8)
+        @discount_3 = @merchant_1.bulk_discounts.create!(percentage: 50, quantity: 15)
+    
+      end
+
+      it 'top_discounted_percentage' do 
+        expect(@invoice_1.total_revenue).to eq(110)
+        expect(@invoice_1.revenue_discount).to eq(30)
+      end
+    end
+
     describe '#total_revenue' do
       before :each do
         invoice_spec_test_data
@@ -50,6 +94,33 @@ RSpec.describe Invoice, type: :model do
         invoice_spec_test_data
 
         expect(@invoice_1.total_revenue).to be_a(Integer)
+      end
+    end
+
+    describe "#total_revenue_to_currency" do
+      before :each do
+        @merchant_1 = Merchant.create!(name: 'Hair Care')
+        @item_1 = Item.create!(name: "Shampoo", description: "This washes your hair", unit_price: 10, merchant_id: @merchant_1.id, status: 1)
+        @item_8 = Item.create!(name: "Butterfly Clip", description: "This holds up your hair but in a clip", unit_price: 5, merchant_id: @merchant_1.id)
+        @customer_1 = Customer.create!(first_name: 'Joey', last_name: 'Smith')
+        @invoice_1 = Invoice.create!(customer_id: @customer_1.id, status: 2, created_at: "2012-03-27 14:54:09")
+        @ii_1 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_1.id, quantity: 10, unit_price: 10, status: 2)
+        @ii_2 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_8.id, quantity: 1, unit_price: 10, status: 1)
+        
+
+
+        @discount_1 = @merchant_1.bulk_discounts.create!(percentage: 30, quantity: 10)
+        @discount_2 = @merchant_1.bulk_discounts.create!(percentage: 20, quantity: 8)
+        @discount_3 = @merchant_1.bulk_discounts.create!(percentage: 50, quantity: 15)
+      end
+
+      it 'returns the total revenue for an invoice in dollars' do
+        expect(@invoice_1.discounted_revenue_to_currency).to eq("$0.80")
+        
+      end
+
+      it "returns a string for total revenue to currency" do
+        expect(@invoice_1.discounted_revenue_to_currency).to be_a(String)
       end
     end
 
