@@ -1,5 +1,16 @@
 class BulkDiscountsController < ApplicationController
 
+  def self.get_holidays
+    #where
+    conn = Faraday.new(url: "https://date.nager.at/api/v3/")
+
+    response = conn.get("NextPublicHolidays/US")
+
+    json = JSON.parse(response.body, symbolize_names: true)
+
+    @holidays = Holiday.new(json)
+  end
+
   def index 
     @merchant = Merchant.find(params[:merchant_id])
     @discounts = @merchant.bulk_discounts.all
