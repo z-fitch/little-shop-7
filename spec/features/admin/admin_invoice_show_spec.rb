@@ -86,10 +86,21 @@ RSpec.describe "Admin Invoice Show Page", type: :feature do
     expect(page).to have_select(:invoice_status, selected: "Cancelled")
   end
 
+  # =========== User Story 8 ===========
+
   it "Has the total discounted revenue for this invocie from the admin side which includes bulk discounts" do 
     visit admin_invoice_path(@invoice_1)
 
       expect(page).to have_content("Discounted Revenue: #{@invoice_1.discounted_revenue_to_currency}")
       expect(page).to have_content("Discounted Revenue: $44.00")
   end
+
+  it "I can see the total revenue that will be generated from all of the items on the invoice(without discount)" do
+    visit admin_invoice_path(@invoice_1)
+  
+    expected_total = @invoice_1.total_revenue_to_currency
+    expect(page).to have_content("Total Revenue: #{expected_total}")
+    expect(page).to have_content("Total Revenue: $57.50")
+  end
 end
+  # =========== End User Story 8 ===========

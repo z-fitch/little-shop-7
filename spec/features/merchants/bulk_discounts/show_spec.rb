@@ -17,6 +17,8 @@ RSpec.describe "Merchant Invoices Show page", type: :feature do
     @discount_7 = @merchant_3.bulk_discounts.create!(percentage: 25, quantity: 10)
   end
 
+  # =========== User Story 4 ===========
+
   describe "As a Merchant when I visit the bulk discount show page" do
     it "has the bulk discount's quantity threshold and percentage discount" do
       visit merchant_bulk_discount_path(@merchant_1, @discount_3)
@@ -27,7 +29,9 @@ RSpec.describe "Merchant Invoices Show page", type: :feature do
       expect(page).to_not have_content(@discount_1.percentage)
       expect(page).to have_content("#{@discount_3.percentage}% discount, when purchasing #{@discount_3.quantity} items")
     end
+    # =========== End User Story 4 ===========
 
+    # =========== User Story 5 ===========
     it "has a link to edit the discount, when clicked it takes me to a form that have the currents discounts attributes already filled in" do
       visit merchant_bulk_discount_path(@merchant_1, @discount_3)
 
@@ -53,6 +57,8 @@ RSpec.describe "Merchant Invoices Show page", type: :feature do
       expect(page).to have_content("15%")
       expect(page).to have_content("15 items")
     end
+
+    # sad paths
 
     it "when the edit form is filled in with invaild information, after clicking submit i am redirected to the edit page with an error" do
       visit edit_merchant_bulk_discount_path(@merchant_1, @discount_3)
@@ -99,3 +105,5 @@ RSpec.describe "Merchant Invoices Show page", type: :feature do
     end
   end
 end
+
+# =========== End User Story 5 ===========
