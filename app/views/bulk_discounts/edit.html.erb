@@ -1,6 +1,6 @@
 <%= render partial: "merchants/header", locals: {merchant: @merchant} %>
 
-<h3>Update Bulk Discount Form</h3>
+<h3>Update Bulk Discount</h3>
 
 <%= form_with model: @bulk_discount, url: merchant_bulk_discount_path(@merchant, @discount), method: :patch do |f| %>
   <%= f.label :percentage %>

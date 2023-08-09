@@ -208,6 +208,7 @@ RSpec.describe "Merchant Invoice Show Page", type: :feature do
     end
     # ======= END STORY 18 TESTS =======
 
+    # =========== User Story 6 ===========
     describe "When I visit my merchant invoice show page" do 
       it "Has the total revenue for my merchant from this invoice (not including discounts)" do 
         visit merchant_invoice_path(@merchant_1, @invoice_1)
@@ -225,11 +226,14 @@ RSpec.describe "Merchant Invoice Show Page", type: :feature do
           expect(page).to have_content ("Discounted Revenue: $5,354.04")
         end
       end
+      # =========== End User Story 6 ===========
 
+      # =========== User Story 7 ===========
       it "has a link to the discount that was applied to the item show page" do 
         visit merchant_invoice_path(@merchant_1, @invoice_1)
 
         expect(page).to have_link("Applied Discount", count: 1)
+        expect(page).to have_link("Applied Discount", href: merchant_bulk_discount_path(@merchant_1, @discount_1))
         expect(page).to_not have_link("Applied Discount", href: merchant_bulk_discount_path(@merchant_1, @discount_2))
         expect(page).to_not have_link("Applied Discount", href: merchant_bulk_discount_path(@merchant_1, @discount_3))
 
@@ -240,3 +244,4 @@ RSpec.describe "Merchant Invoice Show Page", type: :feature do
     end
   end
 end
+# =========== End User Story 7 ===========

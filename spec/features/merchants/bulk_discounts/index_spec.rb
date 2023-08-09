@@ -17,6 +17,8 @@ RSpec.describe "Merchant Invoices Index page", type: :feature do
     @discount_7 = @merchant_3.bulk_discounts.create!(percentage: 25, quantity: 10)
   end
 
+  # =========== User Story 1 ===========
+
   describe "When I visit the merchant dashboard" do 
     it "has a link to view all the discounts for that merchant" do 
       visit merchant_dashboard_path(@merchant_1)
@@ -43,6 +45,7 @@ RSpec.describe "Merchant Invoices Index page", type: :feature do
         expect(page).to have_content("#{@discount_1.percentage}% off #{@discount_1.quantity} items")
         expect(page).to have_content("#{@discount_2.percentage}% off #{@discount_2.quantity} items")
         expect(page).to have_content("#{@discount_3.percentage}% off #{@discount_3.quantity} items")
+        expect(page).to have_content("30% off 10 items")
 
         expect(page).to_not have_content(@discount_4.quantity)
         expect(page).to_not have_content(@discount_4.percentage)
@@ -52,25 +55,28 @@ RSpec.describe "Merchant Invoices Index page", type: :feature do
         expect(page).to_not have_content(@discount_6.percentage)
       end
     end
-
+    
     it "has a link to each discounts show page" do 
       visit merchant_bulk_discounts_path(@merchant_1)
 
       within("div#all-discounts") do 
-        expect(page).to have_link("#{@discount_1.percentage}% off #{@discount_1.quantity} items")
-        expect(page).to have_link("#{@discount_2.percentage}% off #{@discount_2.quantity} items")
-        expect(page).to have_link("#{@discount_3.percentage}% off #{@discount_3.quantity} items")
+        expect(page).to have_link("#{@discount_1.percentage}% off #{@discount_1.quantity} items", href: merchant_bulk_discount_path(@merchant_1, @discount_1))
+        expect(page).to have_link("#{@discount_2.percentage}% off #{@discount_2.quantity} items", href: merchant_bulk_discount_path(@merchant_1, @discount_2))
+        expect(page).to have_link("#{@discount_3.percentage}% off #{@discount_3.quantity} items", href: merchant_bulk_discount_path(@merchant_1, @discount_3))
+        expect(page).to have_link("30% off 10 items")
 
-        expect(page).to_not have_link("#{@discount_4.percentage}% off #{@discount_4.quantity} items")
-        expect(page).to_not have_link("#{@discount_5.percentage}% off #{@discount_5.quantity} items")
-        expect(page).to_not have_link("#{@discount_6.percentage}% off #{@discount_6.quantity} items")
+        expect(page).to_not have_link("#{@discount_4.percentage}% off #{@discount_4.quantity} items", href: merchant_bulk_discount_path(@merchant_1, @discount_4))
+        expect(page).to_not have_link("#{@discount_5.percentage}% off #{@discount_5.quantity} items", href: merchant_bulk_discount_path(@merchant_1, @discount_5))
+        expect(page).to_not have_link("#{@discount_6.percentage}% off #{@discount_6.quantity} items", href: merchant_bulk_discount_path(@merchant_1, @discount_6))
         
         click_link("#{@discount_1.percentage}% off #{@discount_1.quantity} items")
       
         expect(current_path).to eq(merchant_bulk_discount_path(@merchant_1, @discount_1))
       end
     end
+    # =========== End User Story 1 ===========
 
+    # =========== User Story 2 ===========
     it "has a link to create a new discount, when clicked it takes us to a form to create a discount" do
       visit merchant_bulk_discounts_path(@merchant_1)
 
@@ -99,7 +105,7 @@ RSpec.describe "Merchant Invoices Index page", type: :feature do
         expect(page).to have_content("45% off 15 items")
       end
     end
-
+    # sad paths :((
     it "filled in with Invalid Percentage, after being filled, I click submit and i see an error saying the discount cant be made" do 
       visit new_merchant_bulk_discount_path(@merchant_1)
 
@@ -143,7 +149,9 @@ RSpec.describe "Merchant Invoices Index page", type: :feature do
 
       expect(page).to have_content("Quantity is not a number")
     end
+    # =========== End User Story 2 ===========
 
+    # =========== User Story 3 ===========
     it "has a button to delete a discount" do 
       visit merchant_bulk_discounts_path(@merchant_1)
 
@@ -161,8 +169,11 @@ RSpec.describe "Merchant Invoices Index page", type: :feature do
         expect(current_path).to eq(merchant_bulk_discounts_path(@merchant_3))
         expect(page).to_not have_content(@discount_7)
       end
+      expect(page).to have_content("Bulk Discount Deleted!")
     end
+    # =========== End User Story 3 ===========
 
+    # =========== User Story 9 ===========
     it "has a list of the next three holidays in the us" do 
       visit merchant_bulk_discounts_path(@merchant_3)
 
